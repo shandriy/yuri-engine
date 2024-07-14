@@ -72,13 +72,64 @@ var yuri = (function() {
       context: undefined
     },
     entities: [],
-    Entity: function(imageData, shown) {
-      if (imageData)
-        this.spritesheet = imageData;
+    Entity: function(shown, imageData, spriteWidth, spriteHeight) {
       if (shown === !!shown)
         this.shown = shown;
+      if (imageData)
+        this.spritesheet = imageData;
+      if (spriteWidth)
+        this.spriteWidth = spriteWidth;
+      if (spriteHeight)
+        this.spriteHeight = spriteHeight;
       this.index = yuri.entities.length;
       yuri.entities.push(this);
+    },
+    frame: function(run) {
+      var animate = window.requestAnimationFrame || setTimeout;
+      var now = window.performance ? performance.now ? function() {
+        return performance.now();
+      } : Date.now : Date.now;
+      var previous = now(), current;
+      function animated() {
+        current = now();
+        run(current - previous);
+        previous = current;
+        var len = yuri.entities.length;
+        yuri.entities.sort(function(one, two) {
+          return one.z - two.z;
+        });
+        for (var i = 0; i < len; i += 1) {
+          var entity = yuri.entities[i];
+          if (spriteWidth && spriteHeight) {
+            var horizontal = entity.spritesheet.width / spriteWidth;
+            var animationX = entity.animation % horizontal;
+            var animationY = (entity.animation - animationX) / horizontal;
+            if (yuri.props.scaleStyle)
+              yuri.props.context.drawImage(
+                entity.spritesheet, animationX, animationY, spriteWidth, spriteHeight,
+                entity.x, entity.y, spriteWidth, spriteHeight
+              );
+            else {
+              var width = (spriteWidth / yuri.props.width) * yuri.props.canvas.width;
+              var height = (spriteHeight / yuri.props.height) * yuri.props.canvas.height;
+              yuri.props.context.drawImage(
+                entity.spritesheet, animationX, animationY, spriteWidth, spriteHeight,
+                entity.x, entity.y, width, height
+              );
+            };
+          } else {
+            if (yuri.props.scaleStyle)
+              yuri.props.context.drawImage(entity.spritesheet, entity.x, entity.y);
+            else {
+              var width = (entity.spritesheet.width / yuri.props.width) * yuri.props.canvas.width;
+              var height = (entity.spritesheet.height / yuri.props.height) * yuri.props.canvas.height;
+              yuri.props.context.drawImage(entity.spritesheet, entity.x, entity.y, width, height);
+            };
+          };
+        };
+        animate(animated);
+      };
+      animated();
     }
   };
   yuri.Entity.prototype.x = 0;
@@ -86,11 +137,11 @@ var yuri = (function() {
   yuri.Entity.prototype.z = 0;
   yuri.Entity.prototype.shown = true;
   yuri.Entity.prototype.spritesheet = new Image();
+  yuri.Entity.prototype.spriteWidth = undefined;
+  yuri.Entity.prototype.spriteHeight = undefined;
+  yuri.Entity.prototype.animation = 0;
   yuri.Entity.prototype.destroy = function() {
     yuri.entities.splice(this.index, 1);
   };
   return yuri;
 })();
-addEventListener("DOMContentLoaded", function() {
-  yuri.init(800, 600, false);
-});
