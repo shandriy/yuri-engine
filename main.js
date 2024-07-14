@@ -1,6 +1,12 @@
 var yuri = (function() {
   var yuri = {
     init: function(width, height, scale, backgroundColor) {
+      this.props.width = width;
+      this.props.height = height;
+      var scaleStyle = true;
+      if (scale === !!scale)
+        scaleStyle = !scale;
+      this.props.scaleStyle = scaleStyle;
       var html = document.getElementsByTagName("html")[0];
       html.style.width = "100%";
       html.style.height = "100%";
@@ -17,14 +23,13 @@ var yuri = (function() {
         document.body.style.backgroundColor = backgroundColor;
       var canvas = document.createElement("canvas");
       var context = canvas.getContext("2d", { alpha: false });
+      this.props.canvas = canvas;
+      this.props.context = context;
       canvas.style.top = "0px";
       canvas.style.left = "0px";
       canvas.style.position = "absolute";
       canvas.style.margin = "0";
       canvas.style.padding = "0";
-      var scaleStyle = true;
-      if (scale === !!scale)
-        scaleStyle = !scale;
       if (scaleStyle) {
         canvas.width = width;
         canvas.height = height;
@@ -57,6 +62,13 @@ var yuri = (function() {
       addEventListener("focus", resize);
       addEventListener("resize", resize);
       document.body.appendChild(canvas);
+    },
+    props: {
+      width: 300,
+      height: 150,
+      scaleStyle: true,
+      canvas: undefined,
+      context: undefined
     }
   };
   return yuri;
