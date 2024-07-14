@@ -1,12 +1,13 @@
 var yuri = (function() {
-  var yuri = {
+  var yuri;
+  yuri = {
     init: function(width, height, scale, backgroundColor) {
-      this.props.width = width;
-      this.props.height = height;
+      yuri.props.width = width;
+      yuri.props.height = height;
       var scaleStyle = true;
       if (scale === !!scale)
         scaleStyle = !scale;
-      this.props.scaleStyle = scaleStyle;
+      yuri.props.scaleStyle = scaleStyle;
       var html = document.getElementsByTagName("html")[0];
       html.style.width = "100%";
       html.style.height = "100%";
@@ -23,8 +24,8 @@ var yuri = (function() {
         document.body.style.backgroundColor = backgroundColor;
       var canvas = document.createElement("canvas");
       var context = canvas.getContext("2d", { alpha: false });
-      this.props.canvas = canvas;
-      this.props.context = context; 
+      yuri.props.canvas = canvas;
+      yuri.props.context = context; 
       canvas.style.top = "0px";
       canvas.style.left = "0px";
       canvas.style.position = "absolute";
@@ -69,7 +70,24 @@ var yuri = (function() {
       scaleStyle: true,
       canvas: undefined,
       context: undefined
+    },
+    entities: [],
+    Entity: function(imageData, shown) {
+      if (imageData)
+        this.spritesheet = imageData;
+      if (shown === !!shown)
+        this.shown = shown;
+      this.index = yuri.entities.length;
+      yuri.entities.push(this);
     }
+  };
+  yuri.Entity.prototype.x = 0;
+  yuri.Entity.prototype.y = 0;
+  yuri.Entity.prototype.z = 0;
+  yuri.Entity.prototype.shown = true;
+  yuri.Entity.prototype.spritesheet = new Image();
+  yuri.Entity.prototype.destroy = function() {
+    yuri.entities.splice(this.index, 1);
   };
   return yuri;
 })();
