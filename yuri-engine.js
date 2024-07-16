@@ -101,20 +101,20 @@ var yuri = (function() {
         });
         for (var i = 0; i < len; i += 1) {
           var entity = yuri.entities[i];
-          if (spriteWidth && spriteHeight) {
-            var horizontal = entity.spritesheet.width / spriteWidth;
+          if (entity.spriteWidth && entity.spriteHeight) {
+            var horizontal = entity.spritesheet.width / entity.spriteWidth;
             var animationX = entity.animation % horizontal;
             var animationY = (entity.animation - animationX) / horizontal;
             if (yuri.props.scaleStyle)
               yuri.props.context.drawImage(
-                entity.spritesheet, animationX, animationY, spriteWidth, spriteHeight,
-                entity.x, entity.y, spriteWidth, spriteHeight
+                entity.spritesheet, animationX, animationY, entity.spriteWidth, entity.spriteHeight,
+                entity.x, entity.y, entity.spriteWidth, entity.spriteHeight
               );
             else {
-              var width = (spriteWidth / yuri.props.width) * yuri.props.canvas.width;
-              var height = (spriteHeight / yuri.props.height) * yuri.props.canvas.height;
+              var width = (entity.spriteWidth / yuri.props.width) * yuri.props.canvas.width;
+              var height = (entity.spriteHeight / yuri.props.height) * yuri.props.canvas.height;
               yuri.props.context.drawImage(
-                entity.spritesheet, animationX, animationY, spriteWidth, spriteHeight,
+                entity.spritesheet, animationX, animationY, entity.spriteWidth, entity.spriteHeight,
                 entity.x, entity.y, width, height
               );
             };
