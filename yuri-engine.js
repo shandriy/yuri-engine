@@ -108,14 +108,14 @@ var yuri = (function() {
             var animationY = (entity.animation - animationX) / horizontal;
             if (yuri.props.scaleStyle)
               yuri.props.context.drawImage(
-                entity.spritesheet, animationX, animationY, entity.spriteWidth, entity.spriteHeight,
+                entity.spritesheet, animationX * entity.spriteWidth, animationY * entity.spriteHeight, entity.spriteWidth, entity.spriteHeight,
                 entity.x - (entity.spriteWidth / 2), entity.y - (entity.spriteHeight / 2), entity.spriteWidth, entity.spriteHeight
               );
             else {
               var width = (entity.spriteWidth / yuri.props.width) * yuri.props.canvas.width;
               var height = (entity.spriteHeight / yuri.props.height) * yuri.props.canvas.height;
               yuri.props.context.drawImage(
-                entity.spritesheet, animationX, animationY, entity.spriteWidth, entity.spriteHeight,
+                entity.spritesheet, animationX * entity.spriteWidth, animationY * entity.spriteHeight, entity.spriteWidth, entity.spriteHeight,
                 entity.x - (entity.spriteWidth / 2), entity.y - (entity.spriteHeight / 2), width, height
               );
             };
