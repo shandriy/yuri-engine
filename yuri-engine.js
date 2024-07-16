@@ -92,6 +92,7 @@ var yuri = (function() {
       } : Date.now : Date.now;
       var previous = now(), current;
       function animated() {
+        yuri.props.context.clearRect(0, 0, yuri.props.canvas.width, yuri.props.canvas.height);
         current = now();
         run(current - previous);
         previous = current;
@@ -137,6 +138,12 @@ var yuri = (function() {
       for (var i = 0; i < length; i += 1)
         if (yuri.entities[i].name === name)
           return yuri.entities[i];
+    },
+    keyboard: {
+      down: [],
+      isDown: function(key) {
+        return yuri.keyboard.down.indexOf(key) > -1;
+      }
     }
   };
   yuri.Entity.prototype.x = 0;
@@ -150,5 +157,52 @@ var yuri = (function() {
   yuri.Entity.prototype.destroy = function() {
     yuri.entities.splice(this.index, 1);
   };
+  function convertKey(keyboardEvent) {
+    if (keyboardEvent.code)
+      return keyboardEvent.code;
+    var keyCode = keyboardEvent.keyCode;
+    if (keyCode >= 65 && keyCode <= 90)
+      return "Key" + ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[keyCode - 65]);
+    if (keyCode >= 48 && keyCode <= 57)
+      return keyCode - 48;
+    if (key >= 112 && keyCode <= 135)
+      return "F" + (key - 111);
+    switch (keyCode) {
+      case 8:
+        return "Backspace";
+      case 9:
+        return "Tab";
+      case 13:
+        return "Enter";
+      case 16:
+        return "ShiftLeft";
+      case 32:
+        return "Space";
+      case 37:
+        return "ArrowLeft";
+      case 38:
+        return "ArrowUp";
+      case 39:
+        return "ArrowRight";
+      case 40:
+        return "ArrowDown";
+      case 46:
+        return "Delete";
+    };
+  };
+  addEventListener("keydown", function(keyboardEvent) {
+    var key = convertKey(keyboardEvent);
+    if (yuri.keyboard.down.indexOf(key) === -1)
+      yuri.keyboard.down.push(key);
+  });
+  addEventListener("keyup", function(keyboardEvent) {
+    var key = convertKey(keyboardEvent);
+    var index = yuri.keyboard.down.indexOf(key);
+    if (index > -1)
+      yuri.keyboard.down.splice(index, 1);
+  });
+  addEventListener("blur", function() {
+    yuri.keyboard.down = [];
+  });
   return yuri;
 })();
