@@ -72,7 +72,8 @@ var yuri = (function() {
       context: undefined
     },
     entities: [],
-    Entity: function(shown, imageData, spriteWidth, spriteHeight) {
+    Entity: function(name, shown, imageData, spriteWidth, spriteHeight) {
+      this.name = name;
       if (shown === !!shown)
         this.shown = shown;
       if (imageData)
@@ -130,6 +131,12 @@ var yuri = (function() {
         animate(animated);
       };
       animated();
+    },
+    getEntityByName: function(name) {
+      var length = yuri.entities.length;
+      for (var i = 0; i < length; i += 1)
+        if (yuri.entities[i].name === name)
+          return yuri.entities[i];
     }
   };
   yuri.Entity.prototype.x = 0;
