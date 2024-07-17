@@ -162,6 +162,10 @@ var yuri = (function() {
   yuri.Entity.prototype.animation = 0;
   yuri.Entity.prototype.destroy = function() {
     yuri.entities.splice(this.index, 1);
+    var length = yuri.entities.length;
+    for (var i = this.index; i < length; i += 1) {
+      yuri.entities[i].index -= 1;
+    };
   };
   function convertKey(keyboardEvent) {
     if (keyboardEvent.code)
