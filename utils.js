@@ -47,6 +47,30 @@ var utils = (function() {
           script.setAttribute("src", path);
           document.body.appendChild(script);
         };
+      },
+      sound: function(path, onload) {
+        var sound = document.createElement("audio");
+        if (onload) script.addEventListener("canplaythrough", function() {
+          onload(sound, path);
+        });
+        sound.setAttribute("src", path);
+        return sound;
+      },
+      sounds: function(pathArray, prefix, postfix, onload) {
+        var soundArray = [];
+        var length = pathArray.length;
+        var prepend = prefix ? prefix : "";
+        var append = postfix ? postfix : "";
+        for (var i = 0; i < length; i += 1) {
+          var sound = document.createElement("audio");
+          var path = prepend + pathArray[i] + append;
+          if (onload) image.addEventListener("canplaythrough", function() {
+            onload(sound, path);
+          });
+          sound.src = path;
+          soundArray.push(sound);
+        };
+        return soundArray;
       }
     }
   };
