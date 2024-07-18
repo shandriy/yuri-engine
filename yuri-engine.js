@@ -161,6 +161,9 @@ var yuri = (function() {
   yuri.Entity.prototype.spriteHeight = undefined;
   yuri.Entity.prototype.animation = 0;
   yuri.Entity.prototype.destroy = function() {
+    yuri.entities.sort(function(one, two) {
+      return one.index - two.index;
+    });
     yuri.entities.splice(this.index, 1);
     var length = yuri.entities.length;
     for (var i = this.index; i < length; i += 1) {
