@@ -177,7 +177,7 @@ var yuri = (function() {
     if (keyCode >= 65 && keyCode <= 90)
       return "Key" + ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[keyCode - 65]);
     if (keyCode >= 48 && keyCode <= 57)
-      return keyCode - 48;
+      return "Digit" + (keyCode - 48);
     if (keyCode >= 112 && keyCode <= 135)
       return "F" + (keyCode - 111);
     switch (keyCode) {
