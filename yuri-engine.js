@@ -60,8 +60,8 @@ var yuri = (function() {
         };
       };
       resize();
-      addEventListener("focus", resize);
-      addEventListener("resize", resize);
+      addEventListener("focus", resize, false);
+      addEventListener("resize", resize, false);
       document.body.appendChild(canvas);
     },
     props: {
@@ -207,15 +207,15 @@ var yuri = (function() {
     var key = convertKey(keyboardEvent);
     if (yuri.keyboard.down.indexOf(key) === -1)
       yuri.keyboard.down.push(key);
-  });
+  }, false);
   addEventListener("keyup", function(keyboardEvent) {
     var key = convertKey(keyboardEvent);
     var index = yuri.keyboard.down.indexOf(key);
     if (index > -1)
       yuri.keyboard.down.splice(index, 1);
-  });
+  }, false);
   addEventListener("blur", function() {
     yuri.keyboard.down = [];
-  });
+  }, false);
   return yuri;
 })();

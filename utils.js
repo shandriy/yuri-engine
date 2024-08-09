@@ -6,7 +6,7 @@ var utils = (function() {
         var image = new Image();
         if (onload) image.addEventListener("load", function() {
           onload(image, path);
-        });
+        }, false);
         image.src = path;
         return image;
       },
@@ -20,7 +20,7 @@ var utils = (function() {
           var path = prepend + pathArray[i] + append;
           if (onload) image.addEventListener("load", function() {
             onload(image, path);
-          });
+          }, false);
           image.src = path;
           imageArray.push(image);
         };
@@ -30,7 +30,7 @@ var utils = (function() {
         var script = document.createElement("script");
         if (onload) script.addEventListener("load", function() {
           onload(path);
-        });
+        }, false);
         script.setAttribute("src", path);
         document.body.appendChild(script);
       },
@@ -43,7 +43,7 @@ var utils = (function() {
           var path = prepend + pathArray[i] + append;
           if (onload) script.addEventListener("load", function() {
             onload(path);
-          });
+          }, false);
           script.setAttribute("src", path);
           document.body.appendChild(script);
         };
@@ -52,7 +52,7 @@ var utils = (function() {
         var sound = document.createElement("audio");
         if (onload) script.addEventListener("canplaythrough", function() {
           onload(sound, path);
-        });
+        }, false);
         sound.setAttribute("src", path);
         return sound;
       },
@@ -66,7 +66,7 @@ var utils = (function() {
           var path = prepend + pathArray[i] + append;
           if (onload) image.addEventListener("canplaythrough", function() {
             onload(sound, path);
-          });
+          }, false);
           sound.src = path;
           soundArray.push(sound);
         };
